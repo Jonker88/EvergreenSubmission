@@ -22,7 +22,7 @@ Reactiv Clips bring App Clip technology to any Shopify merchant. Install directl
 
 Reactiv integrates natively with Shopify for product catalog, cart, and checkout, and supports third-party providers for payments and analytics.
 
-Learn more: [Reactiv](https://reactiv.ai/)
+Learn more: [Reactiv Mobile App Builder](https://reactiv.ai/)
 
 ## Problem Statements
 
@@ -92,6 +92,14 @@ Starter templates are provided so you can focus on your solution, not scaffoldin
 - How can a Clip capture fan identity at scale with no app install and no friction?
 - How can it power real-time engagement during an event?
 - How can it enable merch sales and audience building in a single interaction?
+
+Consider the full lifecycle of a concert-goer when deciding where your solution should intervene. Your solution should target **at least one** of these touchpoints and make a clear case for why it represents the most valuable opportunity.
+
+1. **Discovery** — A fan learns about a concert in their city through social media ads, posts from friends, or organic search.
+2. **Ticket Purchase** — The fan browses and buys tickets through Ticketmaster or a similar platform.
+3. **The Wait** — The period between buying tickets and the show itself — often weeks or months. Fans are engaged but have no direct relationship with One Live.
+4. **Show Day** — The fan arrives at the venue, waits in queues, and moves through the event experience. High purchase intent, high friction.
+5. **Post-Show Afterglow** — The fan leaves the show in a heightened emotional state. Engagement and nostalgia are high in the hours and days that follow.
 
 ## Assumptions & Constraints
 
