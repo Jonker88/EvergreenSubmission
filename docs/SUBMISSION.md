@@ -16,13 +16,14 @@ Your submission is strong when it is:
 
 ### 1. Problem Framing
 
-Which touchpoint(s) in the concert customer journey are you targeting?
+Which user moment or touchpoint are you targeting?
 
-- [ ] Discovery — fan learns about the concert
-- [ ] Ticket Purchase — fan buys tickets
-- [ ] The Wait — period between purchase and show day
-- [ ] Show Day — fan is at the venue
-- [ ] Post-Show Afterglow — fan leaves in a heightened emotional state
+- [ ] Discovery / first awareness
+- [ ] Intent / consideration
+- [ ] Purchase / conversion
+- [ ] In-person / on-site interaction
+- [ ] Post-purchase / re-engagement
+- [ ] Other: ___
 
 What friction or missed opportunity are you solving for? (3-5 sentences)
 
@@ -67,9 +68,9 @@ Minimum expectation:
 
 ### 5. Impact Hypothesis
 
-How does this increase One Live's merchandise revenue? Be specific about:
-- Which channel benefits (venue, online, or both)?
-- What conversion improvement do you estimate, and why?
+How does this create measurable business impact? Be specific about:
+- Which channel benefits (in-person, online, or both)?
+- What conversion or engagement improvement do you estimate, and why?
 - Why this touchpoint is the right place to intervene
 
 ---

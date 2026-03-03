@@ -1,0 +1,29 @@
+name: Validate PR
+
+on:
+  pull_request:
+    paths:
+      - "Submissions/**"
+      - "ReactivChallengeKit/**"
+      - "scripts/generate-registry.sh"
+      - ".github/workflows/validate-pr.yml"
+
+jobs:
+  validate:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Regenerate submission registry
+        run: bash scripts/generate-registry.sh
+
+      - name: Build (no signing)
+        run: |
+          xcodebuild build \
+            -project ReactivChallengeKit/ReactivChallengeKit.xcodeproj \
+            -scheme ReactivChallengeKit \
+            -destination 'generic/platform=iOS Simulator' \
+            -quiet \
+            CODE_SIGNING_ALLOWED=NO

@@ -13,6 +13,7 @@ final class ClipRouter {
     static let builtInExperiences: [any ClipExperience.Type] = [
         HelloClipExperience.self,
         VenueMerchExperience.self,
+        TrailCheckInExperience.self,
     ]
 
     static var allExperiences: [any ClipExperience.Type] {

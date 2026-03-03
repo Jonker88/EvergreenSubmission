@@ -29,8 +29,6 @@ struct VenueMerchExperience: ClipExperience {
 
     var body: some View {
         ZStack {
-            ClipBackground()
-
             if purchased {
                 VStack(spacing: 20) {
                     Spacer()

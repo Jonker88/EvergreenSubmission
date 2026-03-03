@@ -17,8 +17,9 @@ struct MyClipExperience: ClipExperience {
     static let clipDescription = "One line: what does the fan get in under 30 seconds?"
     static let teamName = "Your Team Name"
 
-    // Pick your journey touchpoint: .discovery, .ticketPurchase, .theWait, .showDay, .postShow
-    static let touchpoint: JourneyTouchpoint = .showDay
+    // Pick your touchpoint: .discovery, .purchase, .onSite, .reengagement, .utility
+    // or define your own JourneyTouchpoint(id:title:icon:context:notificationHint:sortOrder:)
+    static let touchpoint: JourneyTouchpoint = .onSite
 
     // Pick how fans invoke this: .qrCode, .nfcTag, .iMessage, .smartBanner, .appleMaps, .siri
     static let invocationSource: InvocationSource = .qrCode

@@ -1,33 +1,56 @@
-# One Live × Reactiv Clips Challenge
+# Reactiv ClipKit Lab
 
-One Live manages concert merchandise for major artists (Jelly Roll, U2, and more). They lose sales because fans face long lines at venue merch booths and One Live has no way to reach fans before or after a show. **Your challenge:** use Reactiv Clips (Apple App Clips) to capture the merch sales One Live is currently missing.
+An App Clip simulator for Hack Canada. Build creative App Clip experiences without needing entitlements, Associated Domains, or an Apple Developer account.
 
-Read the full problem statement: [../docs/PROBLEM_STATEMENT.md](../docs/PROBLEM_STATEMENT.md)
+An App Clip is a lightweight slice of an app that lets users complete a specific task quickly, without downloading the full app. They can be triggered by:
+
+- Scanning an App Clip code (similar to a QR code)
+- Tapping an NFC tag
+- Tapping a link sent via iMessage
+- Tapping a Smart App Banner in Safari
+- Siri suggestions or Apple Maps
+
+No install, no login, no onboarding. Apple designed them for "30-second moments." Most people only think of them as "scan to pay." **Your challenge: what else should App Clips be used for that nobody has built yet?**
+
+## About Reactiv
+
+Reactiv is a platform for building and managing mobile commerce apps for e-commerce businesses. Its key differentiator is **Reactiv Clips**, powered by Apple's App Clip technology.
+
+### Reactiv Clips
+
+Reactiv Clips bring App Clip technology to any Shopify merchant. Install directly from the Shopify App Store, build Clip experiences with a visual builder or generate them with AI, and go live without writing code. Clips support configurable push notifications, giving brands up to 8 hours of direct, time-sensitive engagement after a single interaction.
+
+Learn more: [Reactiv Mobile App Builder](https://reactiv.ai/)
 
 ---
 
-## The Concert Customer Journey
+## Problem Statements (Pick One, Combine, or Invent Your Own)
 
-Your solution should target **at least one** of these touchpoints. See [../docs/JOURNEY.md](../docs/JOURNEY.md) for a detailed guide.
+You are not limited to a single domain. Use these as inspiration:
 
-```
-Discovery → Ticket Purchase → The Wait → Show Day → Post-Show Afterglow
-   │              │                │           │              │
-   │              │                │           │              └─ Emotional high.
-   │              │                │           │                 "I want to remember tonight."
-   │              │                │           │
-   │              │                │           └─ At the venue. High intent, high friction.
-   │              │                │              Long lines, crowded, cash/card hassle.
-   │              │                │
-   │              │                └─ Days/weeks before. Fan is excited but unreachable.
-   │              │                   One Live has no way to contact them.
-   │              │
-   │              └─ Ticketmaster owns this. No customer data shared.
-   │
-   └─ Fan discovers the show. No merch awareness yet.
-```
+1. **AI-Powered Personalization**  
+   Personalize instantly using context (time, location, weather, URL params) without login/history.
 
-**The key mechanic:** When a fan opens a Reactiv Clip, One Live can send push notifications for **up to 8 hours**. This is the only direct communication channel available.
+2. **In-Store Companion Shopping**  
+   Help shoppers browse and self-checkout in under 30 seconds from in-store triggers.
+
+3. **Ad-to-Clip Commerce**  
+   Route ad traffic into a native Clip flow and recover intent with the 8-hour notification window.
+
+4. **Live Events — Arenas, Concerts & Sports**  
+   Capture fan engagement, merch intent, and audience growth at peak emotional moments.
+
+For the event use case, see detailed journey context in [../docs/JOURNEY.md](../docs/JOURNEY.md) and full background in [../docs/PROBLEM_STATEMENT.md](../docs/PROBLEM_STATEMENT.md).
+
+---
+
+## Assumptions & Constraints
+
+- **iOS only.** Build for iPhone.
+- Build a **runnable Swift Clip experience** in this simulator (not just mockups).
+- Avoid trivial ideas (e.g. generic coupon app with no depth).
+- Design for App Clip shape: URL invocation, no onboarding, immediate value.
+- Think commercially and technically: something that could ship or inform roadmap.
 
 ---
 
@@ -111,6 +134,19 @@ struct PreShowHypeExperience: ClipExperience {
 }
 ```
 
+Touchpoints are extendable. You can use built-ins (`.discovery`, `.purchase`, `.onSite`, `.reengagement`, `.utility`) or define your own:
+
+```swift
+static let touchpoint = JourneyTouchpoint(
+    id: "campus-checkin",
+    title: "Campus Check-In",
+    icon: "person.badge.key.fill",
+    context: "Student arrives and needs quick check-in.",
+    notificationHint: "Send a completion reminder within the 8h window.",
+    sortOrder: 35
+)
+```
+
 ### Step 3: Rebuild
 
 The build script auto-discovers your experience from `Submissions/`. Run **Cmd+R** and your clip appears in the landing screen.
@@ -143,7 +179,7 @@ Pre-built components you can compose without deep SwiftUI knowledge. See `Reacti
 
 | Component | What It Does |
 |---|---|
-| `ClipBackground()` | System background with subtle brand tint that adapts to light/dark mode |
+| `ClipBackground()` | Neutral system background that adapts to light/dark mode |
 | `ClipHeader(title:subtitle:systemImage:)` | Title + subtitle + SF Symbol icon |
 | `ClipActionButton(title:icon:action:)` | Large styled call-to-action button |
 | `ClipSuccessOverlay(message:)` | Animated checkmark + confirmation message |
@@ -197,4 +233,4 @@ Pre-built components you can compose without deep SwiftUI knowledge. See `Reacti
 
 Real App Clips have hard constraints. Read [CONSTRAINTS.md](CONSTRAINTS.md) to understand them — they're not limitations, they're a design language.
 
-The question is NOT "can you build an iOS app?" The question is: **"what concert merch experience fits the shape of an App Clip that nobody has built yet?"**
+The question is NOT "can you build an iOS app?" The question is: **"what experience fits the shape of an App Clip that nobody has built yet?"**

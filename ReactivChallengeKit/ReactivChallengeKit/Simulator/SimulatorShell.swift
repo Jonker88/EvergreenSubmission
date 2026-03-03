@@ -68,7 +68,7 @@ struct ClipHostView: View {
                 HStack(spacing: 4) {
                     Image(systemName: match.experienceType.touchpoint.icon)
                         .font(.system(size: 10, weight: .semibold))
-                    Text(match.experienceType.touchpoint.rawValue)
+                    Text(match.experienceType.touchpoint.title)
                         .font(.system(size: 11, weight: .semibold))
                 }
                 .foregroundStyle(.primary)

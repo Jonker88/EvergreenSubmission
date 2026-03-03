@@ -8,49 +8,107 @@ import SwiftUI
 
 // MARK: - Journey Metadata
 
-enum JourneyTouchpoint: String, CaseIterable, Identifiable {
-    case discovery = "Discovery"
-    case ticketPurchase = "Ticket Purchase"
-    case theWait = "The Wait"
-    case showDay = "Show Day"
-    case postShow = "Post-Show"
+struct JourneyTouchpoint: Hashable, Identifiable {
+    let id: String
+    let title: String
+    let icon: String
+    let context: String
+    let notificationHint: String
+    let sortOrder: Int
 
-    var id: String { rawValue }
-
-    var icon: String {
-        switch self {
-        case .discovery: return "eye.fill"
-        case .ticketPurchase: return "ticket.fill"
-        case .theWait: return "clock.fill"
-        case .showDay: return "music.mic"
-        case .postShow: return "moon.stars.fill"
-        }
+    init(
+        id: String,
+        title: String,
+        icon: String,
+        context: String,
+        notificationHint: String,
+        sortOrder: Int = 100
+    ) {
+        self.id = id
+        self.title = title
+        self.icon = icon
+        self.context = context
+        self.notificationHint = notificationHint
+        self.sortOrder = sortOrder
     }
+}
 
-    var fanContext: String {
-        switch self {
-        case .discovery:
-            return "Fan sees a social media post about the concert."
-        case .ticketPurchase:
-            return "Fan just bought tickets on Ticketmaster."
-        case .theWait:
-            return "Fan has tickets. Show is in 2 weeks."
-        case .showDay:
-            return "Fan is at the venue. Merch booths everywhere."
-        case .postShow:
-            return "Fan just left the show. Still buzzing."
-        }
-    }
+extension JourneyTouchpoint {
+    // Generic defaults for broad ClipKit Lab use-cases.
+    static let discovery = JourneyTouchpoint(
+        id: "discovery",
+        title: "Discovery",
+        icon: "eye.fill",
+        context: "User discovers the experience for the first time.",
+        notificationHint: "Use the 8h window to re-engage with a clear next step.",
+        sortOrder: 10
+    )
+    static let purchase = JourneyTouchpoint(
+        id: "purchase",
+        title: "Purchase",
+        icon: "cart.fill",
+        context: "User is actively evaluating or buying.",
+        notificationHint: "Reinforce intent and reduce drop-off in the 8h window.",
+        sortOrder: 20
+    )
+    static let onSite = JourneyTouchpoint(
+        id: "on-site",
+        title: "On-Site",
+        icon: "mappin.and.ellipse",
+        context: "User is physically at a location and needs fast action.",
+        notificationHint: "Use time-sensitive nudges while context is fresh.",
+        sortOrder: 30
+    )
+    static let reengagement = JourneyTouchpoint(
+        id: "reengagement",
+        title: "Re-engage",
+        icon: "bell.badge.fill",
+        context: "User left the flow but can still be reactivated.",
+        notificationHint: "Use targeted reminders within the 8h notification window.",
+        sortOrder: 40
+    )
+    static let utility = JourneyTouchpoint(
+        id: "utility",
+        title: "Utility",
+        icon: "wand.and.stars",
+        context: "Single-purpose task that delivers immediate practical value.",
+        notificationHint: "If push is used, keep it minimal and utility-first.",
+        sortOrder: 50
+    )
 
-    var emotion: String {
-        switch self {
-        case .discovery: return "Curious"
-        case .ticketPurchase: return "Excited, spending mode"
-        case .theWait: return "Anticipation building"
-        case .showDay: return "Peak energy, impatient"
-        case .postShow: return "Euphoric, nostalgic"
-        }
-    }
+    // Legacy aliases to keep older examples/templates working.
+    static let ticketPurchase = JourneyTouchpoint(
+        id: "ticket-purchase",
+        title: "Ticket Purchase",
+        icon: "ticket.fill",
+        context: "User just committed and is in spending mode.",
+        notificationHint: "Push timely upsell or completion prompts in the 8h window.",
+        sortOrder: 21
+    )
+    static let theWait = JourneyTouchpoint(
+        id: "the-wait",
+        title: "The Wait",
+        icon: "clock.fill",
+        context: "User is waiting between decision and event.",
+        notificationHint: "Use sparse reminders and clear value moments.",
+        sortOrder: 25
+    )
+    static let showDay = JourneyTouchpoint(
+        id: "show-day",
+        title: "Show Day",
+        icon: "music.mic",
+        context: "User is on-site with high intent and low patience.",
+        notificationHint: "Drive immediate conversion while urgency is high.",
+        sortOrder: 31
+    )
+    static let postShow = JourneyTouchpoint(
+        id: "post-show",
+        title: "Post-Show",
+        icon: "moon.stars.fill",
+        context: "User is post-event and emotionally engaged.",
+        notificationHint: "Use short-lifetime offers to capture afterglow intent.",
+        sortOrder: 41
+    )
 }
 
 enum InvocationSource: String, CaseIterable, Identifiable {
@@ -102,7 +160,7 @@ protocol ClipExperience: View {
     /// Your team name (for the submission gallery).
     static var teamName: String { get }
 
-    /// Which concert journey touchpoint does this clip target?
+    /// Which user journey touchpoint does this clip target?
     static var touchpoint: JourneyTouchpoint { get }
 
     /// How would this clip be invoked in the real world?
@@ -114,6 +172,6 @@ protocol ClipExperience: View {
 
 extension ClipExperience {
     static var teamName: String { "Reactiv" }
-    static var touchpoint: JourneyTouchpoint { .showDay }
+    static var touchpoint: JourneyTouchpoint { .utility }
     static var invocationSource: InvocationSource { .qrCode }
 }

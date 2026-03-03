@@ -8,15 +8,13 @@ import SwiftUI
 
 struct LandingView: View {
     @Bindable var router: ClipRouter
-    @State private var selectedTouchpoint: JourneyTouchpoint = .showDay
+    @State private var selectedTouchpoint: JourneyTouchpoint = .utility
 
     var body: some View {
         ZStack {
-            ClipBackground()
-
             ScrollView {
                 VStack(spacing: 14) {
-                    tonightBanner
+                    labBanner
                         .padding(.top, 8)
 
                     journeyTimeline
@@ -34,28 +32,32 @@ struct LandingView: View {
             InvocationConsole(router: router)
                 .padding(.bottom, 10)
         }
+        .onAppear {
+            if let first = availableTouchpoints.first {
+                selectedTouchpoint = first
+            }
+        }
     }
 
-    // MARK: - Tonight Banner
+    // MARK: - Header Banner
 
-    private var tonightBanner: some View {
-        let show = OneLiveMockData.shows[0]
+    private var labBanner: some View {
         return HStack(spacing: 14) {
-            Image(systemName: show.artist.systemImage)
+            Image(systemName: "appclip")
                 .font(.system(size: 26))
                 .foregroundStyle(.secondary)
                 .frame(width: 50, height: 50)
                 .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 14))
 
             VStack(alignment: .leading, spacing: 3) {
-                Text("TONIGHT")
+                Text("REACTIV")
                     .font(.system(size: 10, weight: .heavy))
                     .tracking(2)
                     .foregroundStyle(.blue)
-                Text(show.artist.name)
-                    .font(.system(size: 22, weight: .bold))
+                Text("ClipKit Lab")
+                    .font(.system(size: 21, weight: .bold))
                     .foregroundStyle(.primary)
-                Text("\(show.venue.name) · \(show.venue.city)")
+                Text("\(ClipRouter.allExperiences.count) experiences available")
                     .font(.system(size: 12))
                     .foregroundStyle(Color(.tertiaryLabel))
             }
@@ -73,7 +75,7 @@ struct LandingView: View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(JourneyTouchpoint.allCases) { touchpoint in
+                    ForEach(availableTouchpoints) { touchpoint in
                         let isSelected = touchpoint == selectedTouchpoint
                         let clipCount = clipsForTouchpoint(touchpoint).count
 
@@ -86,7 +88,7 @@ struct LandingView: View {
                                 Image(systemName: touchpoint.icon)
                                     .font(.system(size: 12, weight: .semibold))
 
-                                Text(touchpoint.rawValue)
+                                Text(touchpoint.title)
                                     .font(.system(size: 13, weight: isSelected ? .bold : .medium))
                                     .lineLimit(1)
 
@@ -127,7 +129,7 @@ struct LandingView: View {
                 Image(systemName: selectedTouchpoint.icon)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(.blue)
-                Text(selectedTouchpoint.fanContext)
+                Text(selectedTouchpoint.context)
                     .font(.system(size: 12))
                     .foregroundStyle(Color(.label))
             }
@@ -136,25 +138,10 @@ struct LandingView: View {
                 Image(systemName: "bell.fill")
                     .font(.system(size: 9))
                     .foregroundStyle(.orange)
-                Text(notificationHintText)
+                Text(selectedTouchpoint.notificationHint)
                     .font(.system(size: 11))
                     .foregroundStyle(Color(.secondaryLabel))
             }
-        }
-    }
-
-    private var notificationHintText: String {
-        switch selectedTouchpoint {
-        case .discovery:
-            return "8h window: Push merch preview before they forget"
-        case .ticketPurchase:
-            return "8h window: Fan is in spending mode — push a bundle"
-        case .theWait:
-            return "8h window: Each Clip open resets it. Re-engage weekly."
-        case .showDay:
-            return "8h window: Clip at 7 PM = pushes until 3 AM"
-        case .postShow:
-            return "8h window: \"Free shipping until midnight\""
         }
     }
 
@@ -192,11 +179,11 @@ struct LandingView: View {
                 .font(.system(size: 36))
                 .foregroundStyle(Color(.quaternaryLabel))
 
-            Text("No clips for \(selectedTouchpoint.rawValue)")
+            Text("No clips for \(selectedTouchpoint.title)")
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(.tertiary)
 
-            Text("Set touchpoint = .\(touchpointCase)")
+            Text("Set touchpoint id = \"\(selectedTouchpoint.id)\"")
                 .font(.system(size: 12, design: .monospaced))
                 .foregroundStyle(.blue.opacity(0.6))
         }
@@ -204,17 +191,23 @@ struct LandingView: View {
         .padding(.vertical, 40)
     }
 
-    private var touchpointCase: String {
-        switch selectedTouchpoint {
-        case .discovery: return "discovery"
-        case .ticketPurchase: return "ticketPurchase"
-        case .theWait: return "theWait"
-        case .showDay: return "showDay"
-        case .postShow: return "postShow"
+    // MARK: - Helpers
+
+    private var availableTouchpoints: [JourneyTouchpoint] {
+        var seen: Set<String> = []
+        let unique = ClipRouter.allExperiences.compactMap { experience -> JourneyTouchpoint? in
+            let point = experience.touchpoint
+            guard seen.insert(point.id).inserted else { return nil }
+            return point
+        }
+
+        return unique.sorted {
+            if $0.sortOrder == $1.sortOrder {
+                return $0.title < $1.title
+            }
+            return $0.sortOrder < $1.sortOrder
         }
     }
-
-    // MARK: - Helpers
 
     private func clipsForTouchpoint(_ touchpoint: JourneyTouchpoint) -> [any ClipExperience.Type] {
         ClipRouter.allExperiences.filter { $0.touchpoint == touchpoint }

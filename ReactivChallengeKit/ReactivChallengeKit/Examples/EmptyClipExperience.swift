@@ -8,7 +8,7 @@ import SwiftUI
 
 // TODO: Rename this struct to match your clip idea (e.g., PreShowMerchExperience)
 // TODO: Update urlPattern, clipName, clipDescription, teamName
-// TODO: Pick a journey touchpoint: Discovery, The Wait, Show Day, Post-Show Afterglow
+// TODO: Pick a touchpoint category (or define your own custom JourneyTouchpoint)
 // TODO: Build your UI using the building block components (see Components/)
 
 struct EmptyClipExperience: ClipExperience {
@@ -24,8 +24,9 @@ struct EmptyClipExperience: ClipExperience {
     static let clipDescription = "One line: what does the fan get in under 30 seconds?"
     static let teamName = "Your Team Name"
 
-    // TODO: Set your journey touchpoint: .discovery, .ticketPurchase, .theWait, .showDay, .postShow
-    static let touchpoint: JourneyTouchpoint = .showDay
+    // TODO: Set your touchpoint: .discovery, .purchase, .onSite, .reengagement, .utility
+    //       or define your own JourneyTouchpoint(id:title:icon:context:notificationHint:sortOrder:)
+    static let touchpoint: JourneyTouchpoint = .onSite
 
     // TODO: Set how your clip is invoked: .qrCode, .nfcTag, .iMessage, .smartBanner, .appleMaps, .siri
     static let invocationSource: InvocationSource = .qrCode
@@ -36,8 +37,6 @@ struct EmptyClipExperience: ClipExperience {
 
     var body: some View {
         ZStack {
-            ClipBackground()
-
             ScrollView {
                 VStack(spacing: 20) {
                     // TODO: Replace with ArtistBanner, ClipHeader, or your own header

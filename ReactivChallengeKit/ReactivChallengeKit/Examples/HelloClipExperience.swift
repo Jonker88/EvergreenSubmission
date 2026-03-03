@@ -21,8 +21,6 @@ struct HelloClipExperience: ClipExperience {
 
     var body: some View {
         ZStack {
-            ClipBackground()
-
             VStack(spacing: 32) {
                 Spacer()
 
